@@ -2827,7 +2827,8 @@
         margin-top: 52px;
       }
 
-      .detection-card .detection-preview {
+      .detection-card:first-child .detection-preview,
+      .detection-card:nth-child(2) .detection-preview {
         position: relative;
         top: auto;
         right: auto;
@@ -2838,6 +2839,7 @@
         visibility: visible;
         pointer-events: auto;
         transform: none;
+        transform-origin: initial;
       }
 
       .system-card h3 {
@@ -2879,7 +2881,8 @@
     }
 
     @media (hover: none) {
-      .detection-card .detection-preview {
+      .detection-card:first-child .detection-preview,
+      .detection-card:nth-child(2) .detection-preview {
         position: relative;
         top: auto;
         right: auto;
@@ -2890,6 +2893,7 @@
         visibility: visible;
         pointer-events: auto;
         transform: none;
+        transform-origin: initial;
       }
 
       .person-card__overlay {
