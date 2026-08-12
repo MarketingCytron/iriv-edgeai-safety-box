@@ -1761,7 +1761,7 @@
 
     .hardware-copy__note {
       display: inline-flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 9px;
       margin: 20px auto 0;
       color: #d2ccc6;
@@ -1773,8 +1773,10 @@
     }
 
     .hardware-copy__note::before {
+      flex-shrink: 0;
       width: 7px;
       height: 7px;
+      margin-top: 4px;
       border-radius: 50%;
       background: var(--green);
       box-shadow: 0 0 0 5px rgba(47,158,84,.1),0 0 18px rgba(47,158,84,.28);
@@ -3147,7 +3149,7 @@
                 <div class="viewer-row">
                   <section class="viewer" aria-label="Selected camera feed">
                     <div class="viewer__frame" id="heroDashViewerFrame" style="--signal:#f2b705">
-                      <video id="heroDashMainFeed" muted loop playsinline preload="auto" aria-label="Live detection footage from the selected camera">
+                      <video id="heroDashMainFeed" muted loop autoplay playsinline preload="auto" aria-label="Live detection footage from the selected camera">
                         <source src="assets/cam-01-detect.mp4" type="video/mp4">
                       </video>
                       <div class="viewer__top">
@@ -4398,6 +4400,7 @@ window._load_script = function(url, callback, isSubmit) {
         updateHeroClock();
         window.setInterval(updateHeroClock, 30000);
         renderStack(camrows[0]);
+        if (!heroReduceMotion) video.play().catch(() => {});
 
         if (!heroReduceMotion) window.setTimeout(startSequence, 900);
       })();
@@ -4537,6 +4540,16 @@ window._load_script = function(url, callback, isSubmit) {
             if (!card.contains(document.activeElement)) stopCycle();
           });
         });
+
+        if (!hoverCapable) {
+          const previewVisibilityObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) startCycle();
+              else stopCycle();
+            });
+          }, { threshold: 0.4 });
+          previewVisibilityObserver.observe(card);
+        }
       });
 
       const blurTextTargets = [...document.querySelectorAll(".hero h1, .section__title, .cta h2")];
